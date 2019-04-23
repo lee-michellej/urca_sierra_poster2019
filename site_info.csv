@@ -1,0 +1,25 @@
+﻿lake,pair_ID,elevation,elev_bin,trout,site,name,lat,long,perimeter,area
+Y1A,Y1,3505,high,absent,Yosemite,unnamed,37.811409,119.223566,,48839
+Y1P,Y1,3395,high,present,Yosemite,"Bingman Lake, Lower",37.843928,119.245112,,47923
+Y2A,Y2,2657,med-high,absent,Yosemite,Hart Lakes,37.618694,119.527839,,35463
+Y2P,Y2,2767,med-high,present,Yosemite,Buena Vista Lake,37.598283,119.51606,,58656
+Y3A,Y3,2378,med-low,absent,Yosemite,Mahan Lake,38.052982,119.668192,,84664
+Y3P,Y3,2158,med-low,present,Yosemite,Irwin Bright Lake,37.987429,119.55886,,61269
+Y4A,Y4,1732,low,absent,Yosemite,unnamed,38.036533,119.782983,,74528
+Y4P,Y4,1746,low,present,Yosemite,unnamed,38.037944,119.772837,,62654
+S1A,S1,3355,high,absent,Sixty Lake,unnamed,36.805,118.419,1247,90015
+S1P,S1,3306,high,present,Sixty Lake,Fjord,36.8115,118.43,1490,57057
+S2A,S2,3353,high,absent,Sixty Lake,unnamed,36.808,118.417,461,8365
+S2P,S2,3279,high,present,Sixty Lake,unnamed,36.8175,118.4245,388,6344
+S3A,S3,3416,high,absent,Sixty Lake,Fin,36.8085,118.4125,424,12511
+S3P,S3,3254,high,present,Sixty Lake,Tulip,36.817,118.422,1244,45509
+S4A,S4,3295,high,absent,Sixty Lake,Four Island,36.8125,118.4265,1427,66835
+S4P,S4,3295,high,present,Sixty Lake,Cotter Lake,36.8165,118.427,713,16642
+N1A,N1,3381,,absent,Big Pine,Sixth Lake,37.1365,118.5125,981,31750
+N1P,N1,3290,,present,Big Pine,Fifth Lake,37.1305,118.509,1469,85060
+N2A,N2,3411,,absent,Big Pine,Seventh Lake,37.138,118.517,470,13940
+N2P,N2,3338,,present,Big Pine,Summit,37.1335,118.4995,455,13510
+N3A,N3,3245,,absent,Cottonwood,Hidden Lake,36.29421,118.1156,,
+N3P,N3,3276,,present,Cottonwood,Muir Lake,36.29516,118.12296,,
+N4A,N4,3326,,absent,Cottonwood,Cottonwood Lake 1,36.294,118.12505,,
+N4P,N4,3368,,present,Cottonwood,Cottonwood Lake 3,36.29236,118.12528,,

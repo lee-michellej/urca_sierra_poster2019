@@ -1,0 +1,148 @@
+---
+title: "poster_analyses"
+author: "MJLee"
+date: "4/22/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# libraries and data info
+
+## libraries
+```{r error = FALSE, message = FALSE}
+library(tidyverse)
+library(vegan)
+```
+
+## data files
+```{r message = FALSE, error = FALSE}
+lasioglossum_data1 <- read_csv("Lasioglossum_Sierra.csv")
+handnet_data1 <- read_csv("PollinatorSurveys.csv") %>% 
+  filter(order == "Hymenoptera" | order == "Diptera" | order == "Coleoptera")
+site_metadata <- read_csv("site_info.csv")
+
+order_data <- merge(handnet_data1, site_metadata, by = "lake")
+
+insect_data1 <- merge(handnet_data1, lasioglossum_data1, by = "lake")
+
+lasioglossum_data <- merge(lasioglossum_data1, site_metadata, by = "lake")
+
+```
+
+# BY ORDER
+
+## data visualization by order
+```{r}
+# count by order
+# take order_data "and then"
+orders <- order_data %>% 
+  # group by first the lake sites and then insect order
+  group_by(lake, order) %>% 
+  # calculate the number of observations per order per lake
+  summarise(
+    count = length(order)
+  )
+
+# remerge with site data
+order_lakes_df <- merge(orders, site_metadata, by = "lake")
+
+# multiple side-by-side graphs to visualize order count over elevational gradient
+order_fig1 <- ggplot(order_lakes_df, aes(x = elevation, y = count)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Elevation (m)") +
+  ylab("Pollinator count") +
+  theme_bw()
+order_fig1
+
+order_fig2 <- ggplot(order_lakes_df, aes(x = elevation, y = count)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  facet_wrap(~order) +
+  xlab("Elevation (m)") +
+  ylab("Pollinator count") +
+  theme_bw()
+order_fig2
+
+order_fig3 <- ggplot(order_lakes_df, aes(x = elevation, y = count, fill = order, colour = order)) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm", se = FALSE) +
+  xlab("Elevation (m)") +
+  ylab("Pollinator count") +
+  theme_bw()
+order_fig3
+```
+
+## linear models by order
+```{r}
+lm_order <- lm(count ~ elevation, data = order_lakes_df)
+summary(lm_order)
+
+coleoptera <- order_lakes_df %>% 
+  filter(order == "Coleoptera")
+lm_coleoptera <- lm(count ~ elevation, data = coleoptera)
+summary(lm_coleoptera)
+
+diptera <- order_lakes_df %>% 
+  filter(order == "Diptera")
+lm_diptera <- lm(count ~ elevation, data = diptera)
+summary(lm_diptera)
+
+hymenoptera <- order_lakes_df %>% 
+  filter(order == "Hymenoptera")
+lm_hymenoptera <- lm(count ~ elevation, data = hymenoptera)
+summary(lm_hymenoptera)
+```
+
+
+# data visualization of Lasioglossum
+```{r}
+# count by order
+# take order_data "and then"
+lasioglossum1 <- lasioglossum_data %>% 
+  # group by first the lake sites and then insect order
+  group_by(lake, genus) %>% 
+  # calculate the number of observations per order per lake
+  summarise(
+    count = length(genus)
+  )
+
+lasioglossum <- merge(lasioglossum1, site_metadata, by = "lake")
+
+# visualize Lasioglossum across the elevational gradient
+lasioglossum_fig1 <- ggplot(lasioglossum, aes(x = elevation, y = count)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Elevation (m)") +
+  ylab("Lasioglossum count") +
+  theme_bw()
+lasioglossum_fig1
+
+# visualize all counts across gradient
+lasioglossum_fig2 <- ggplot(lasioglossum_data, aes(x = elevation)) +
+  geom_bar(stat = "count")
+lasioglossum_fig2
+```
+
+
+
+# genus diversity
+```{r message = FALSE, error = FALSE}
+# upload genus data
+
+
+# calculate Shannon's diversity for elevations
+
+# calculate Simpson's diversity for elevations
+
+# merge site metadata with diversity metrics 
+
+# visualize diversity across elevational gradient
+
+
+
+```
+
