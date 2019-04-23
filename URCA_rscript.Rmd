@@ -15,6 +15,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r error = FALSE, message = FALSE}
 library(tidyverse)
 library(vegan)
+library(spatialEco)
+library(reshape2)
 ```
 
 ## data files
@@ -29,6 +31,16 @@ order_data <- merge(handnet_data1, site_metadata, by = "lake")
 insect_data1 <- merge(handnet_data1, lasioglossum_data1, by = "lake")
 
 lasioglossum_data <- merge(lasioglossum_data1, site_metadata, by = "lake")
+
+
+# Sierra all bees
+all_bees1 <- read_csv("sierra_pollgenera.csv") %>% 
+  mutate(
+    sex = na_if(sex, "?"),
+    lake = na_if(lake, "?"),
+    method = na_if(method, "?")
+    ) %>% 
+  rename("QR_code" = QR)
 
 ```
 
@@ -132,13 +144,35 @@ lasioglossum_fig2
 # genus diversity
 ```{r message = FALSE, error = FALSE}
 # upload genus data
+# we did this above in the data info chunk
+
+# first merge all_bees1 with handnet to try and get associated lakes
+all_bees2 <- merge(all_bees1, handnet_data1, by = "QR_code", all.x = TRUE) %>% 
+  mutate(lake = coalesce(lake.x, lake.y)) %>% 
+  select(lake, QR_code, method, family, genus, sex)
+
+# re-merge with site metadata
+all_bees <- merge(all_bees2, site_metadata, by = "lake")
 
 
-# calculate Shannon's diversity for elevations
 
-# calculate Simpson's diversity for elevations
 
-# merge site metadata with diversity metrics 
+###########################
+# reformatting data to matrix
+
+#Change from long format to wide. I would pool everything by lake so that the communities represent independent samples
+poll_matrix <- dcast(all_bees, elevation ~ genus,value.var="genus",fun.aggregate=length)
+
+# different metrics of diversity
+H <- diversity(poll_matrix)
+simp <- diversity(poll_matrix, "simpson")
+
+# "paste" columns together
+diversity_elev <- cbind(
+  elevation = poll_matrix$elevation,
+  H = H <- diversity(poll_matrix),
+  Simp = simp <- diversity(poll_matrix, "simpson")
+)
 
 # visualize diversity across elevational gradient
 
