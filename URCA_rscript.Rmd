@@ -168,14 +168,37 @@ H <- diversity(poll_matrix)
 simp <- diversity(poll_matrix, "simpson")
 
 # "paste" columns together
-diversity_elev <- cbind(
+diversity_elev <- as.data.frame(cbind(
   elevation = poll_matrix$elevation,
   H = H <- diversity(poll_matrix),
   Simp = simp <- diversity(poll_matrix, "simpson")
-)
+))
 
-# visualize diversity across elevational gradient
+# visualize  Shannon's diversity across elevational gradient
+hdiversity_fig1 <- ggplot(diversity_elev, aes(x = elevation, y = H)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Elevation (m)") +
+  ylab("Shannon's Diversity") +
+  theme_bw()
+hdiversity_fig1
 
+# linear model by genera Shannon's diversity
+lm_genera1 <- lm(H ~ elevation, data = diversity_elev)
+summary(lm_genera1)
+
+# visualize  Simpson diversity across elevational gradient
+simpdiversity_fig1 <- ggplot(diversity_elev, aes(x = elevation, y = Simp)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Elevation (m)") +
+  ylab("Simpson Diversity") +
+  theme_bw()
+simpdiversity_fig1
+
+# linear model by genera Simpson diversity
+lm_genera2 <- lm(Simp ~ elevation, data = diversity_elev)
+summary(lm_genera2)
 
 
 ```
