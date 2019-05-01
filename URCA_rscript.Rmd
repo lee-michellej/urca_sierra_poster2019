@@ -42,6 +42,9 @@ all_bees1 <- read_csv("sierra_pollgenera.csv") %>%
     ) %>% 
   rename("QR_code" = QR)
 
+weather_data1 <- read_csv("WeatherData.csv") %>% 
+  dplyr::select(lake, time, temp_F)
+weather_data <- merge(weather_data1, site_metadata)
 ```
 
 # BY ORDER
@@ -84,7 +87,12 @@ order_fig3 <- ggplot(order_lakes_df, aes(x = elevation, y = count, fill = order,
   geom_smooth(method = "lm", se = FALSE) +
   xlab("Elevation (m)") +
   ylab("Pollinator count") +
-  theme_bw()
+  theme_bw() +
+  theme(
+    axis.text = element_text(size = 15),
+    axis.title = element_text(size = 20),
+    legend.position = "none"
+    )
 order_fig3
 ```
 
@@ -180,7 +188,10 @@ hdiversity_fig1 <- ggplot(diversity_elev, aes(x = elevation, y = H)) +
   geom_smooth(method = "lm") +
   xlab("Elevation (m)") +
   ylab("Shannon's Diversity") +
-  theme_bw()
+  theme_bw() +
+  theme(
+    axis.text = element_text(size = 15),
+    axis.title = element_text(size = 20))
 hdiversity_fig1
 
 # linear model by genera Shannon's diversity
@@ -201,5 +212,24 @@ lm_genera2 <- lm(Simp ~ elevation, data = diversity_elev)
 summary(lm_genera2)
 
 
+```
+
+# weather data
+```{r}
+y_weatherlabel <- expression(paste("Temperature (",degree,"F)"))
+
+weather_fig1 <- ggplot(weather_data, aes(x = elevation, y = temp_F)) + 
+  geom_point() +
+  geom_smooth(method = "lm") +
+  xlab("Elevation (m)") +
+  ylab(y_weatherlabel) +
+  theme_bw() +
+  theme(
+    axis.text = element_text(size = 15),
+    axis.title = element_text(size = 20))
+weather_fig1
+
+weather_lm1 <- lm(temp_F ~ elevation, data = weather_data)
+summary(weather_lm1)
 ```
 
